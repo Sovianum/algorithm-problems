@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <assert.h>
 
 class Rectangle {
 public:
@@ -93,39 +93,91 @@ private:
 };
 
 
-void push_to_stack(Stack& stack, Rectangle rect) {
+void inner_process_rectangle(Stack& stack, Rectangle rect, int& curr_max) {
+    Rectangle eqv_rect = stack.pop();                // прямоугольник, который будет помещен обратно в стек
+    if (eqv_rect.area() > curr_max) {
+        curr_max = eqv_rect.area();
+    }
+
+    Rectangle temp_rect;                             // прямоугольник для временных вычислений
+
+    while (!stack.is_empty() && stack.top().height >= rect.height) {
+        temp_rect = stack.pop();
+        if (temp_rect.height <= eqv_rect.height) {  // происходит срезание голов прямоугольников
+            eqv_rect.height = temp_rect.height;
+            eqv_rect.width += temp_rect.width;
+
+            if (eqv_rect.area() > curr_max) {
+                curr_max = eqv_rect.area();
+            }
+        } else {
+            assert (false);     // невозможный случай, так как в этом случае прямоугольник должен был быть просто присоединен
+        }
+    }
+
+    eqv_rect.height = rect.height;
+    eqv_rect.width += rect.width;
+
+    if (eqv_rect.area() > curr_max) {
+        curr_max = eqv_rect.area();
+    }
+    stack.push(eqv_rect);
+}
+
+
+void process_rectangle(Stack& stack, Rectangle rect, int& curr_max) {
     if (stack.is_empty()) {
         stack.push(rect);
+        curr_max = stack.top().area();
         return;
     }
 
-    if (rect.height > stack.top().height) {
+    if (rect.height >= stack.top().height) {
         stack.push(rect);
     } else {
-        stack.top().width += rect.width;
-        stack.top().height = rect.height;
+        inner_process_rectangle(stack, rect, curr_max);
     }
 }
 
 
-int get_max_area(Stack& stack) {
-    int curr_max_area = 0;
-
-    while (!stack.is_empty()) {
-        Rectangle curr_top = stack.pop();
-
-        if (curr_top.area() > curr_max_area) {
-            curr_max_area = curr_top.area();
-        }
-
-        if (!stack.is_empty()) {
-            stack.top().width += curr_top.width;
-        } else {
-            break;
-        }
+int get_max_area(Stack& stack, int& curr_max) {
+    if (stack.is_empty()) {
+        return curr_max;
     }
 
-    return curr_max_area;
+    Rectangle top_rect = stack.pop();
+    Rectangle temp_rect;
+
+    while (!stack.is_empty()) {
+        if (top_rect.area() > curr_max) {
+            curr_max = top_rect.area();
+        }
+
+        temp_rect = stack.pop();
+        top_rect.height = temp_rect.height;
+        top_rect.width += temp_rect.width;
+    }
+
+    if (top_rect.area() > curr_max) {
+        curr_max = top_rect.area();
+    }
+
+    return curr_max;
+}
+
+
+void test_stack() {
+    Stack stack  = Stack();
+    int curr_max = 0;
+    process_rectangle(stack, Rectangle(3000, 1), curr_max);
+
+    //while (!stack.is_empty()) {
+    //    stack.pop().print();
+    //}
+    //std::cout << curr_max;
+
+    std::cout << "result: " << get_max_area(stack, curr_max) << ";   " << "truth: " << 8;
+
 }
 
 
@@ -136,18 +188,14 @@ int main() {
     int rect_width = 0;
     int rect_height = 0;
     Stack stack = Stack();
+
+    int curr_max = 0;
     for (int i = 0; i != rect_num; ++i) {
         std::cin >> rect_width >> rect_height;
         Rectangle rect = Rectangle(rect_height, rect_width);
-        push_to_stack(stack, rect);
+        process_rectangle(stack, rect, curr_max);
     }
 
 
-    for (int i = 0; i != rect_num; ++i) {
-        Rectangle rect = stack.pop();
-        rect.print();
-    }
-
-
-    //std::cout << get_max_area(stack);
+    std::cout << get_max_area(stack, curr_max);
 }
