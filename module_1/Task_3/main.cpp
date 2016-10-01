@@ -7,8 +7,20 @@
 #include <iostream>
 #include <assert.h>
 
+int localize_peak(int* arr, int arr_len) {
+    assert(arr_len > 0);
+
+    for (int length = 1; length < arr_len; length *= 2) {
+        if (arr[length - 1] < arr[length - 1]) {
+            return length;
+        }
+    }
+
+    return -1;
+}
+
 int find_peak(int *arr, int arr_len) {
-    assert(arr_len >= 0);
+    assert(arr_len > 0);
 
     int beg = 0;
     int end = arr_len;
@@ -71,7 +83,15 @@ int main() {
         std::cin >> arr[i];
     }
 
-    int peak = find_peak(arr, arr_len);
+//    int peak = find_peak(arr, arr_len);
+
+    int peak = 0;
+    int length = localize_peak(arr, arr_len);
+    if (length != -1) {
+        peak = find_peak(arr + length / 2, length / 2);
+    } else {
+        peak = find_peak(arr, arr_len);
+    }
 
     std::cout << peak;
 

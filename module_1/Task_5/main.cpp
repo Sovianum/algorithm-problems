@@ -8,18 +8,13 @@
 #include <iostream>
 #include <assert.h>
 
-class Rectangle {
-public:
+struct Rectangle {
     Rectangle(): height(0), width(0) {};
 
     Rectangle(int height, int width): height(height), width(width) {};
 
     int area() {
         return this->height * this-> width;
-    }
-
-    void print(std::ostream& os=std::cout) {
-        os << this->width << ' ' << this->height << std::endl;
     }
 
     int height;
@@ -30,77 +25,93 @@ public:
 class Stack {
 public:
 
-    Stack(size_t init_size=5, unsigned int size_factor=2): arr_size(init_size), size_factor(size_factor) {
-        this->arr = new Rectangle*[arr_size];
-        this->arr_begin = arr;
-        this->arr_end = this->arr_begin + arr_size;
+    Stack(size_t init_size=5, unsigned int size_factor=2);
 
-        this->end = this->arr_begin;
-    }
+    ~Stack();
 
-    ~Stack() {
-        delete[] this->arr;
-    }
+    void push(Rectangle rect);
 
-    void push(Rectangle rect) {
+    Rectangle& pop();
 
-        if (this->is_full()) {
-            this->realloc_arr();
-        }
+    Rectangle& top();
 
-        *(this->end) = new Rectangle(rect.height, rect.width);
-        ++(this->end);
-
-        return;
-    }
-
-    Rectangle& pop() {
-        --(this->end);
-        return **(this->end);
-    }
-
-    Rectangle& top() {
-        return **(this->end - 1);
-    }
-
-    bool is_empty() {
-        return this->end == this->arr_begin;
-    }
+    bool is_empty();
 
 private:
 
-    bool is_full() {
-        return this->end == this->arr_end;
-    }
+    bool is_full();
 
-    void realloc_arr() {
-        this->arr_size *= this->size_factor;
-        Rectangle** new_arr = new Rectangle*[this->arr_size];
-        int new_arr_cnt = 0;
+    void realloc_buffer();
 
-        while (!(this->is_empty())) {
-            new_arr[new_arr_cnt++] = *(this->arr_begin++);
-        }
-        delete[] this->arr;
-        this->arr = new_arr;
-
-        this->arr_begin = this->arr;
-        this->arr_end = this->arr + this->arr_size;
-
-        this->end = this->arr_begin + new_arr_cnt;
-    }
-
-    Rectangle** arr;
-    Rectangle** arr_begin;
-    Rectangle** arr_end;
+    Rectangle** buffer;
+    Rectangle** buffer_begin;
+    Rectangle** buffer_end;
 
     Rectangle** end;
     size_t arr_size;
     int size_factor;
 };
 
+Stack::Stack(size_t init_size, unsigned int size_factor): arr_size(init_size), size_factor(size_factor) {
+    this->buffer = new Rectangle*[arr_size];
+    this->buffer_begin = buffer;
+    this->buffer_end = this->buffer_begin + arr_size;
 
-void inner_process_rectangle(Stack& stack, Rectangle rect, int& curr_max) {
+    this->end = this->buffer_begin;
+}
+
+Stack::~Stack() {
+    delete[] this->buffer;
+}
+
+void Stack::push(Rectangle rect) {
+
+    if (this->is_full()) {
+        this->realloc_buffer();
+    }
+
+    *(this->end) = new Rectangle(rect.height, rect.width);
+    ++(this->end);
+
+    return;
+}
+
+Rectangle& Stack::pop() {
+    --(this->end);
+    return **(this->end);
+}
+
+Rectangle& Stack::top() {
+    return **(this->end - 1);
+}
+
+bool Stack::is_empty() {
+    return this->end == this->buffer_begin;
+}
+
+bool Stack::is_full() {
+    return this->end == this->buffer_end;
+}
+
+void Stack::realloc_buffer() {
+    this->arr_size *= this->size_factor;
+    Rectangle** new_buffer = new Rectangle*[this->arr_size];
+    int new_buffer_cnt = 0;
+
+    while (!(this->is_empty())) {
+        new_buffer[new_buffer_cnt++] = *(this->buffer_begin++);
+    }
+    delete[] this->buffer;
+    this->buffer = new_buffer;
+
+    this->buffer_begin = this->buffer;
+    this->buffer_end = this->buffer + this->arr_size;
+
+    this->end = this->buffer_begin + new_buffer_cnt;
+}
+
+
+void inner_process_rectangle(Stack& stack, Rectangle rect, int& curr_max) { // функция выполняет фактическую работу по добавлению прямоугольника в стек
     Rectangle eqv_rect = stack.pop();                // прямоугольник, который будет помещен обратно в стек
     if (eqv_rect.area() > curr_max) {
         curr_max = eqv_rect.area();
@@ -132,7 +143,7 @@ void inner_process_rectangle(Stack& stack, Rectangle rect, int& curr_max) {
 }
 
 
-void process_rectangle(Stack& stack, Rectangle rect, int& curr_max) {
+void process_rectangle(Stack& stack, Rectangle rect, int& curr_max) {   // обертка, добавляющая прямоугольник в стек
     if (stack.is_empty()) {
         stack.push(rect);
         curr_max = stack.top().area();
@@ -147,12 +158,12 @@ void process_rectangle(Stack& stack, Rectangle rect, int& curr_max) {
 }
 
 
-int get_max_area(Stack& stack, int& curr_max) {
+int get_max_area(Stack& stack, int& curr_max) { // функция производит обработку стека с прямоугольниками, упорядоченными по высоте
     if (stack.is_empty()) {
         return curr_max;
     }
 
-    Rectangle top_rect = stack.pop();
+    Rectangle top_rect = stack.pop();   // прямоугольник, снятый с вершины стека
     Rectangle temp_rect;
 
     while (!stack.is_empty()) {
@@ -177,11 +188,6 @@ void test_stack() {
     Stack stack  = Stack();
     int curr_max = 0;
     process_rectangle(stack, Rectangle(3000, 1), curr_max);
-
-    //while (!stack.is_empty()) {
-    //    stack.pop().print();
-    //}
-    //std::cout << curr_max;
 
     std::cout << "result: " << get_max_area(stack, curr_max) << ";   " << "truth: " << 8;
 

@@ -9,115 +9,134 @@
 class Deque {
 public:
 
-    Deque(size_t init_size=5, unsigned int size_factor=2): arr_size(init_size), size_factor(size_factor) {
-        this->arr = new int[arr_size];
-        this->arr_begin = arr;
-        this->arr_end = this->arr_begin + arr_size;
+    Deque(size_t init_size=5, unsigned int size_factor=2);
 
-        this->begin = this->arr_begin;
-        this->end = this->arr_begin + 1;
-    }
+    ~Deque();
 
-    ~Deque() {
-        delete[] this->arr;
-    }
+    void push_front(int element);
 
-    void push_front(int element) {
-        if (this->is_full()) {
-            this->realloc_arr();
-        }
+    void push_back(int element);
 
-        *(this->begin) = element;
-        this->begin = this->move_backward(this->begin);
+    int pop_front();
 
-        return;
-    }
+    int pop_back();
 
-    void push_back(int element) {
-
-        if (this->is_full()) {
-            this->realloc_arr();
-        }
-
-        *(this->end) = element;
-        this->end = this->move_forward(this->end);
-
-        return;
-    }
-
-    int pop_front() {
-        if (this->is_empty()) {
-            return -1;
-        } else {
-            this->begin = this->move_forward(this->begin);
-            return *(this->begin);
-        }
-    }
-
-    int pop_back() {
-        if (this->is_empty()) {
-            return -1;
-        } else {
-            this->end = this->move_backward(this->end);
-            int result = *(this->end);
-            return result;
-        }
-    }
+    bool is_empty();
 
 private:
+    bool is_full();
 
-    int* move_forward(int* &ptr) {
-        if (ptr + 1 == this->arr_end) {
-            return this->arr_begin;
-        } else {
-            return ptr + 1;
-        }
-    }
+    int* move_forward(int* &ptr);
 
-    int* move_backward(int* &ptr) {
-        if (ptr == this->arr_begin) {
-            return this->arr_end - 1;
-        } else {
-            return ptr - 1;
-        }
-    }
+    int* move_backward(int* &ptr);
 
-    bool is_empty() {
-        return this->move_forward(this->begin) == this->end;
-    }
+    void realloc_buffer();
 
-    bool is_full() {
-        return this->move_forward(this->end) == this->begin;
-    }
-
-    void realloc_arr() {
-        this->arr_size *= this->size_factor;
-        int* new_arr = new int[this->arr_size];
-        int new_arr_cnt = 0;
-
-        while (!(this->is_empty())) {
-            int temp = this->pop_front();   // TODO delete
-            new_arr[new_arr_cnt++] = temp;
-        }
-        delete[] this->arr;
-        this->arr = new_arr;
-
-        this->arr_begin = this->arr;
-        this->arr_end = this->arr + this->arr_size;
-
-        this->begin = this->move_backward(this->arr_begin);     // смещение назад сделано потому, что сдвиг указателя происходит перед извлечение элемента
-        this->end = this->arr_begin + new_arr_cnt;
-    }
-
-    int* arr;
-    int* arr_begin;
-    int* arr_end;
+    int* buffer;
+    int* buffer_begin;
+    int* buffer_end;
 
     int* begin;
     int* end;
     size_t arr_size;
     int size_factor;
 };
+
+Deque::Deque(size_t init_size, unsigned int size_factor): arr_size(init_size), size_factor(size_factor) {
+    this->buffer = new int[arr_size];
+    this->buffer_begin = buffer;
+    this->buffer_end = this->buffer_begin + arr_size;
+
+    this->begin = this->buffer_begin;
+    this->end = this->buffer_begin + 1;
+}
+
+Deque::~Deque() {
+    delete[] this->buffer;
+}
+
+void Deque::push_front(int element) {
+    if (this->is_full()) {
+        this->realloc_buffer();
+    }
+
+    *(this->begin) = element;
+    this->begin = this->move_backward(this->begin);
+
+    return;
+}
+
+void Deque::push_back(int element) {
+    if (this->is_full()) {
+        this->realloc_buffer();
+    }
+
+    *(this->end) = element;
+    this->end = this->move_forward(this->end);
+
+    return;
+}
+
+int Deque::pop_front() {
+    if (this->is_empty()) {
+        return -1;
+    } else {
+        this->begin = this->move_forward(this->begin);
+        return *(this->begin);
+    }
+}
+
+int Deque::pop_back() {
+    if (this->is_empty()) {
+        return -1;
+    } else {
+        this->end = this->move_backward(this->end);
+        int result = *(this->end);
+        return result;
+    }
+}
+
+bool Deque::is_empty() {
+    return this->move_forward(this->begin) == this->end;
+}
+
+bool Deque::is_full() {
+    return this->move_forward(this->end) == this->begin;
+}
+
+int* Deque::move_forward(int *&ptr) {
+    if (ptr + 1 == this->buffer_end) {
+        return this->buffer_begin;
+    } else {
+        return ptr + 1;
+    }
+}
+
+int* Deque::move_backward(int *&ptr) {
+    if (ptr == this->buffer_begin) {
+        return this->buffer_end - 1;
+    } else {
+        return ptr - 1;
+    }
+}
+
+void Deque::realloc_buffer() {
+    this->arr_size *= this->size_factor;
+    int* new_buffer = new int[this->arr_size];
+    int new_buffer_cnt = 0;
+
+    while (!(this->is_empty())) {
+        new_buffer[new_buffer_cnt++] = this->pop_front();
+    }
+    delete[] this->buffer;
+    this->buffer = new_buffer;
+
+    this->buffer_begin = this->buffer;
+    this->buffer_end = this->buffer + this->arr_size;
+
+    this->begin = this->move_backward(this->buffer_begin);     // смещение назад сделано потому, что сдвиг указателя происходит перед извлечение элемента
+    this->end = this->buffer_begin + new_buffer_cnt;
+}
 
 
 bool handle_deque(Deque &deque, int code, int arg) {

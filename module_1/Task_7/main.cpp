@@ -13,14 +13,121 @@
 #include <assert.h>
 
 
-class Athlete {
-public:
+struct Athlete {
+    Athlete (): mass(0), strength(0);
     Athlete (int mass, int strength): mass(mass), strength(strength) {};
 
     int mass;
     int strength;
 };
 
+
+class Array {
+public:
+    Array();
+
+    Array(int start_buffer_size, int size_factor);
+
+    ~Array();
+
+    void push_back(Athlete& element);
+
+    Athlete&operator[](int index);
+
+    int get_length() { return this->element_count;};
+
+    bool is_empty() { return this->element_count == 0;};
+private:
+    bool is_full() { return this->element_count == this->buff_size;};
+    void realloc_buffer();
+
+    Athlete* buffer;
+    int buff_size;
+    int element_count;
+    int size_factor;
+};
+
+Array::Array() {
+    this->buff_size = 10;
+    this->size_factor = 2;
+    this->element_count = 0;
+    this->buffer = new Athlete[this->buff_size];
+}
+
+Array::Array(int start_buffer_size, int size_factor) {
+    this->buff_size = start_buffer_size;
+    this->size_factor = size_factor;
+    this->element_count = 0;
+    this->buffer = new Athlete[this->buff_size];
+}
+
+Array::~Array() {
+    delete[] this->buffer;
+}
+
+void Array::push_back(Athlete &element) {
+    if (is_full()) {
+        this->realloc_buffer();
+    }
+    this->buffer[element_count++] = element;
+}
+
+Athlete& Array::operator[](int index) {
+    assert(!this->is_empty());
+
+    return this->buffer[index];
+}
+
+void Array::realloc_buffer() {
+    Athlete* new_buffer = new Athlete[this->buff_size * this->size_factor]();
+    for (int i = 0; i != this->buff_size; ++i) {
+        new_buffer[i] = this->buffer[i];
+    }
+
+    delete[] this->buffer;
+    this->buffer = new_buffer;
+}
+
+
+void use_athlete(bool* athlete_use_arr, int index) {
+    athlete_use_arr[index] = true;
+}
+
+Athlete find_strongest(Array& arr, bool* athlete_use_arr) {
+    int max_strength = -1;
+    Athlete strongest;
+
+    for (int i = 0; i != arr.get_length(); ++i) {
+        if (!athlete_use_arr[i] && arr[i].strength > max_strength) {
+            strongest = arr[i];
+            athlete_use_arr[i] = true;
+        }
+    }
+
+    return strongest;
+}
+
+Athlete& find_next(Array& athlete_arr, bool* athlete_use_arr, int strength_left, bool& status) {
+    int max_next_strength_left = -1;
+    Athlete next_athlete;
+    status = false;
+
+    for (int i = 0; i != athlete_arr.get_length() && !athlete_use_arr[i]; ++i) {
+        int strength_1 = athlete_arr[i].strength;
+        int strength_2 = strength_left - athlete_arr[i].mass;
+        int min_next_strength = strength_1 < strength_2 ? strength_1 : strength_2;
+
+        if (min_next_strength > max_next_strength_left) {
+            max_next_strength_left = min_next_strength;
+            next_athlete = athlete_arr[i];
+            status = true;
+        }
+    }
+
+    return next_athlete;
+}
+
+/*
 class Node {
 public:
     friend class List;
@@ -186,6 +293,8 @@ void test_list() {
     Node* head = list.get_head();
     std::cout << head->get_state().mass << ' ' << head->get_state().strength;
 }
+*/
+
 
 int main() {
     int i = 0;
