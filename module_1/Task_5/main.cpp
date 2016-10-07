@@ -60,7 +60,6 @@ private:
 
     void realloc_buffer();
 
-    //Rectangle* buffer;
     Rectangle* buffer_begin;
     Rectangle* buffer_end;
 
@@ -113,8 +112,9 @@ void Stack::realloc_buffer() {
     Rectangle* new_buffer = new Rectangle[new_buffer_size];
     int new_buffer_cnt = 0;
 
-    while (this->buffer_begin != this->buffer_end) {
-        new_buffer[new_buffer_cnt++] = *(this->buffer_begin++);
+    Rectangle* temp_ptr = buffer_begin;
+    while (temp_ptr != this->buffer_end) {
+        new_buffer[new_buffer_cnt++] = *(temp_ptr++);
     }
     delete[] this->buffer_begin;
     this->buffer_begin = new_buffer;
@@ -195,16 +195,6 @@ int get_max_area(Stack& stack, int& curr_max) { // функция произво
     }
 
     return curr_max;
-}
-
-
-void test_stack() {
-    Stack stack  = Stack();
-    int curr_max = 0;
-    process_rectangle(stack, Rectangle(3000, 1), curr_max);
-
-    std::cout << "result: " << get_max_area(stack, curr_max) << ";   " << "truth: " << 8;
-
 }
 
 
