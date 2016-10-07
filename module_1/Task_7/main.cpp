@@ -11,15 +11,26 @@
 
 #include <iostream>
 #include <assert.h>
+#include <fstream>
 
 
 struct Athlete {
-    Athlete (): mass(0), strength(0);
+    Athlete (): mass(0), strength(0){};
     Athlete (int mass, int strength): mass(mass), strength(strength) {};
+    Athlete (const Athlete& athlete): mass(athlete.mass), strength(athlete.strength) {};
+    Athlete&operator=(const Athlete& athlete) {
+        mass = athlete.mass;
+        strength = athlete.strength;
+        return *this;
+    };
 
     int mass;
     int strength;
 };
+
+void print_athlete(const Athlete& athlete) {
+    std::cout << "m = " << athlete.mass << "; s = " << athlete.strength << std::endl;
+}
 
 
 class Array {
@@ -30,13 +41,16 @@ public:
 
     ~Array();
 
-    void push_back(Athlete& element);
+    void push_back(const Athlete& element);
+
+    void push_back(Athlete&& element);
 
     Athlete&operator[](int index);
 
     int get_length() { return this->element_count;};
 
     bool is_empty() { return this->element_count == 0;};
+
 private:
     bool is_full() { return this->element_count == this->buff_size;};
     void realloc_buffer();
@@ -65,7 +79,14 @@ Array::~Array() {
     delete[] this->buffer;
 }
 
-void Array::push_back(Athlete &element) {
+void Array::push_back(const Athlete &element) {
+    if (is_full()) {
+        this->realloc_buffer();
+    }
+    this->buffer[element_count++] = element;
+}
+
+void Array::push_back(Athlete &&element) {
     if (is_full()) {
         this->realloc_buffer();
     }
@@ -89,218 +110,96 @@ void Array::realloc_buffer() {
 }
 
 
-void use_athlete(bool* athlete_use_arr, int index) {
-    athlete_use_arr[index] = true;
-}
-
 Athlete find_strongest(Array& arr, bool* athlete_use_arr) {
     int max_strength = -1;
     Athlete strongest;
+    int strongest_ind = -1;
 
     for (int i = 0; i != arr.get_length(); ++i) {
         if (!athlete_use_arr[i] && arr[i].strength > max_strength) {
             strongest = arr[i];
-            athlete_use_arr[i] = true;
+            strongest_ind = i;
+            max_strength = arr[i].strength;
         }
     }
 
+    athlete_use_arr[strongest_ind] = true;
     return strongest;
 }
 
-Athlete& find_next(Array& athlete_arr, bool* athlete_use_arr, int strength_left, bool& status) {
+Athlete find_next(Array& athlete_arr, bool* athlete_use_arr, int& strength_left, bool& status) {
     int max_next_strength_left = -1;
     Athlete next_athlete;
+    int next_athlete_ind = -1;
     status = false;
 
-    for (int i = 0; i != athlete_arr.get_length() && !athlete_use_arr[i]; ++i) {
-        int strength_1 = athlete_arr[i].strength;
-        int strength_2 = strength_left - athlete_arr[i].mass;
-        int min_next_strength = strength_1 < strength_2 ? strength_1 : strength_2;
+    for (int i = 0; i != athlete_arr.get_length(); ++i) {
+        if (!athlete_use_arr[i]) {
+            int strength_1 = athlete_arr[i].strength;
+            int strength_2 = strength_left - athlete_arr[i].mass;
+            int min_val = strength_1 < strength_2 ? strength_1 : strength_2;
 
-        if (min_next_strength > max_next_strength_left) {
-            max_next_strength_left = min_next_strength;
-            next_athlete = athlete_arr[i];
-            status = true;
+            bool cond = true;
+            cond &= (min_val > max_next_strength_left) && (min_val >= 0);
+            if (min_val == max_next_strength_left) {
+                cond &= athlete_arr[i].mass > athlete_arr[next_athlete_ind].mass;
+            }
+
+            //if ((min_val > max_next_strength_left) && (min_val > 0)) {
+            if (cond) {
+                max_next_strength_left = min_val;
+                next_athlete = athlete_arr[i];
+                next_athlete_ind = i;
+                strength_left = min_val;
+                status = true;
+            }
         }
+    }
+
+    if (status) {
+        athlete_use_arr[next_athlete_ind] = true;
     }
 
     return next_athlete;
 }
 
-/*
-class Node {
-public:
-    friend class List;
 
-    Node() {
-        this->prev = NULL;
-        this->next = NULL;
-        this->state = NULL;
+void read_in(std::istream& is, Array& array) {
+    int mass = 0;
+    int strength = 0;
+    while (is >> mass >> strength) {
+        array.push_back(Athlete(mass, strength));
     }
-
-    ~Node() {
-        delete this->state;
-        if (this->next != NULL) {
-            delete(this->next);
-        }
-    }
-
-    Node(Athlete& element) {
-        this->next = NULL;
-        this->state = new Athlete(element.mass, element.strength);
-    }
-
-    Athlete& get_state() {
-        return *state;
-    }
-
-    Node* get_next() {
-        return this->next;
-    }
-
-    Node* get_prev() {
-        return this->prev;
-    }
-
-    bool is_head() {
-        return this->prev == NULL;
-    }
-
-    bool is_tail() {
-        return this->next == NULL;
-    }
-
-
-private:
-    Athlete* state;
-    Node* next;
-    Node* prev;
-};
-
-
-class List {
-public:
-    List() {
-        this->head = NULL;
-        this->tail = this->head;
-    }
-
-    ~List() {
-        delete this->head;
-    }
-
-    bool is_empty() {
-        return this->head == NULL;
-    }
-
-    Node* get_head() {
-        return this->head;
-    }
-
-    void insert_after(Node& node, Athlete& state) {
-        Node* new_node = new Node(state);
-        new_node->next = node.next;
-        new_node->prev = &node;
-
-        if (node.next->prev != NULL) {
-            node.next->prev = new_node;
-        }
-        node.next = new_node;
-    }
-
-    void push_back(Athlete& state) {
-        if (this->is_empty()) {
-            this->head = new Node(state);
-            this->tail = this->head;
-            return;
-        }
-
-        Node* new_node_ptr = new Node(state);
-        this->tail->next = new_node_ptr;
-        new_node_ptr->prev = this->tail;
-        this->tail = new_node_ptr;
-
-
-    }
-
-    void remove_element(Node* node) {
-        if (node->next != NULL) {
-            node->next->prev = node->prev;
-        }
-
-        if (node->prev != NULL) {
-            node->prev->next = node->next;
-        }
-
-        node->next = node->prev = NULL;
-        delete node;
-    }
-
-private:
-    Node* head;
-    Node* tail;
-};
-
-
-Node* get_strongest_athlete_node(List& list) {
-    assert(!list.is_empty());
-    Node* node_ptr = list.get_head();
-    int max_strength = -1;
-    Node* strongest = NULL;
-
-    while (!node_ptr->is_tail()) {
-        if (node_ptr->get_state().strength > max_strength) {
-            max_strength = node_ptr->get_state().strength;
-            strongest = node_ptr;
-        }
-
-        node_ptr = node_ptr->get_next();
-    }
-
-    return strongest;
 }
 
-Node* get_next_athlete_node(List& list, int& strength_left) {
-    assert(!list.is_empty());
+int solve(Array& athlete_arr, bool* athlete_use_arr) {
+    int max_height = 1;
+    Athlete curr_athlete = find_strongest(athlete_arr, athlete_use_arr);
+    int strength_left = curr_athlete.strength;
+    bool status = true;
 
-    Node* node_ptr = list.get_head();
-    Node* next_athlete_node = NULL;
-
-    int new_strength_left = -1;
-
-    while (!node_ptr->is_tail()) {
-        Athlete athlete = node_ptr->get_state();
-        if (athlete.mass <= strength_left) {      // если предыдущие атлеты выдержат нового
-            int old_athlete_strength_left = strength_left - athlete.mass;   // предел сил старых атлетов с учетом добавления нового
-
-            if (athlete.strength > new_strength_left && old_athlete_strength_left > new_strength_left) { // если добавление этого атлета приводит к более слабому ослаблению башни
-                new_strength_left = old_athlete_strength_left > athlete.strength ? athlete.strength : old_athlete_strength_left;  // выбираем слабое звено
-                next_athlete_node = node_ptr;
-            }
+    while (status) {
+        curr_athlete = find_next(athlete_arr, athlete_use_arr, strength_left, status);
+        if (status) {
+            ++max_height;
         }
-
-        node_ptr = node_ptr->get_next();
     }
 
-    return next_athlete_node;
-
+    return max_height;
 }
 
-void test_list() {
-    List list = List();
-    Athlete athlete = Athlete(10, 10);
-    list.push_back(athlete);
-    Node* head = list.get_head();
-    std::cout << head->get_state().mass << ' ' << head->get_state().strength;
-}
-*/
+
 
 
 int main() {
-    int i = 0;
-    while (std::cin >> i) {
-        std::cout << i << std::endl;
-    }
-    std::cout << "Done";
+    Array athlete_arr = Array();
+    //std::ifstream ifs ("/home/artem/ClionProjects/algorithm-problems/module_1/Task_7/input.txt");
+
+    read_in(std::cin, athlete_arr);
+    bool* athlete_use_arr = new bool[athlete_arr.get_length()];
+
+    std::cout << solve(athlete_arr, athlete_use_arr);
+
+    delete[] athlete_use_arr;
     return 0;
 }
