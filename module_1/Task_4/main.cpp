@@ -4,8 +4,9 @@
 
 #include <iostream>
 #include <assert.h>
+#include <cstring>
 
-
+/*
 class Deque {
 public:
 
@@ -32,7 +33,6 @@ private:
 
     void realloc_buffer();
 
-    int* buffer;
     int* buffer_begin;
     int* buffer_end;
 
@@ -43,8 +43,7 @@ private:
 };
 
 Deque::Deque(size_t init_size, unsigned int size_factor): arr_size(init_size), size_factor(size_factor) {
-    this->buffer = new int[arr_size];
-    this->buffer_begin = buffer;
+    this->buffer_begin = new int[arr_size];
     this->buffer_end = this->buffer_begin + arr_size;
 
     this->begin = this->buffer_begin;
@@ -52,7 +51,7 @@ Deque::Deque(size_t init_size, unsigned int size_factor): arr_size(init_size), s
 }
 
 Deque::~Deque() {
-    delete[] this->buffer;
+    delete[] this->buffer_begin;
 }
 
 void Deque::push_front(int element) {
@@ -125,14 +124,151 @@ void Deque::realloc_buffer() {
     int* new_buffer = new int[this->arr_size];
     int new_buffer_cnt = 0;
 
+
+    //memcpy(new_buffer, this->buffer_begin, (this->buffer_begin - this->buffer_end) * sizeof(int));
+
     while (!(this->is_empty())) {
         new_buffer[new_buffer_cnt++] = this->pop_front();
     }
-    delete[] this->buffer;
-    this->buffer = new_buffer;
 
-    this->buffer_begin = this->buffer;
-    this->buffer_end = this->buffer + this->arr_size;
+    delete[] this->buffer_begin;
+    this->buffer_begin = new_buffer;
+
+    this->buffer_end = this->buffer_begin + this->arr_size;
+
+    this->begin = this->move_backward(this->buffer_begin);     // смещение назад сделано потому, что сдвиг указателя происходит перед извлечение элемента
+    this->end = this->buffer_begin + new_buffer_cnt;
+}
+*/
+
+class Deque {
+public:
+
+    Deque(size_t init_size=5, unsigned int size_factor=2);
+
+    ~Deque();
+
+    void push_front(int element);
+
+    void push_back(int element);
+
+    int pop_front();
+
+    int pop_back();
+
+    bool is_empty();
+
+private:
+    bool is_last_element();
+
+    int* move_forward(int* &ptr);
+
+    int* move_backward(int* &ptr);
+
+    void realloc_buffer();
+
+    int* buffer_begin;
+    int* buffer_end;
+
+    int* begin;
+    int* end;
+    int size_factor;
+};
+
+Deque::Deque(size_t init_size, unsigned int size_factor): size_factor(size_factor) {
+    this->buffer_begin = new int[init_size];
+    this->buffer_end = this->buffer_begin + init_size;
+
+    this->begin = this->buffer_begin;
+    this->end = this->buffer_begin + 1;
+}
+
+Deque::~Deque() {
+    delete[] this->buffer_begin;
+}
+
+void Deque::push_front(int element) {
+    bool flag = this->is_last_element();
+
+    *(this->begin) = element;
+    this->begin = this->move_backward(this->begin);
+
+    if (flag) {
+        this->realloc_buffer();
+    }
+
+    return;
+}
+
+void Deque::push_back(int element) {
+    bool flag = this->is_last_element();
+
+    *(this->end) = element;
+    this->end = this->move_forward(this->end);
+
+    if (flag) {
+        this->realloc_buffer();
+    }
+
+    return;
+}
+
+int Deque::pop_front() {
+    if (this->is_empty()) {
+        return -1;
+    } else {
+        this->begin = this->move_forward(this->begin);
+        return *(this->begin);
+    }
+}
+
+int Deque::pop_back() {
+    if (this->is_empty()) {
+        return -1;
+    } else {
+        this->end = this->move_backward(this->end);
+        return *(this->end);
+    }
+}
+
+bool Deque::is_empty() {
+    return this->move_forward(this->begin) == this->end;
+}
+
+bool Deque::is_last_element() {
+    return this->move_forward(this->end) == this->begin;
+}
+
+int* Deque::move_forward(int *&ptr) {
+    if (ptr + 1 == this->buffer_end) {
+        return this->buffer_begin;
+    } else {
+        return ptr + 1;
+    }
+}
+
+int* Deque::move_backward(int *&ptr) {
+    if (ptr == this->buffer_begin) {
+        return this->buffer_end - 1;
+    } else {
+        return ptr - 1;
+    }
+}
+
+void Deque::realloc_buffer() {
+    size_t new_buffer_size = this->size_factor * (this->buffer_end - this->buffer_begin);
+    int* new_buffer = new int[new_buffer_size];
+    int new_buffer_cnt = 0;
+
+    while (!(this->is_empty())) {
+        this->begin = this->move_forward(this->begin);
+        new_buffer[new_buffer_cnt++] = *(this->begin);
+    }
+
+    delete[] this->buffer_begin;
+    this->buffer_begin = new_buffer;
+
+    this->buffer_end = this->buffer_begin + new_buffer_size;
 
     this->begin = this->move_backward(this->buffer_begin);     // смещение назад сделано потому, что сдвиг указателя происходит перед извлечение элемента
     this->end = this->buffer_begin + new_buffer_cnt;

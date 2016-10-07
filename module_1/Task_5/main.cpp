@@ -13,6 +13,23 @@ struct Rectangle {
 
     Rectangle(int height, int width): height(height), width(width) {};
 
+    Rectangle(const Rectangle& rect) {
+        height = rect.height;
+        width = rect.width;
+    }
+
+    Rectangle(const Rectangle&& rect) {
+        height = rect.height;
+        width = rect.width;
+    }
+
+    Rectangle&operator=(const Rectangle& rect) {
+        height = rect.height;
+        width = rect.width;
+
+        return *this;
+    }
+
     int area() {
         return this->height * this-> width;
     }
@@ -31,7 +48,7 @@ public:
 
     void push(Rectangle rect);
 
-    Rectangle& pop();
+    Rectangle pop();
 
     Rectangle& top();
 
@@ -43,25 +60,23 @@ private:
 
     void realloc_buffer();
 
-    Rectangle** buffer;
-    Rectangle** buffer_begin;
-    Rectangle** buffer_end;
+    //Rectangle* buffer;
+    Rectangle* buffer_begin;
+    Rectangle* buffer_end;
 
-    Rectangle** end;
-    size_t arr_size;
+    Rectangle* end;
     int size_factor;
 };
 
-Stack::Stack(size_t init_size, unsigned int size_factor): arr_size(init_size), size_factor(size_factor) {
-    this->buffer = new Rectangle*[arr_size];
-    this->buffer_begin = buffer;
-    this->buffer_end = this->buffer_begin + arr_size;
+Stack::Stack(size_t init_size, unsigned int size_factor): size_factor(size_factor) {
+    this->buffer_begin = new Rectangle[init_size];
+    this->buffer_end = this->buffer_begin + init_size;
 
     this->end = this->buffer_begin;
 }
 
 Stack::~Stack() {
-    delete[] this->buffer;
+    delete[] this->buffer_begin;
 }
 
 void Stack::push(Rectangle rect) {
@@ -70,19 +85,19 @@ void Stack::push(Rectangle rect) {
         this->realloc_buffer();
     }
 
-    *(this->end) = new Rectangle(rect.height, rect.width);
+    *(this->end) = Rectangle(rect.height, rect.width);
     ++(this->end);
 
     return;
 }
 
-Rectangle& Stack::pop() {
+Rectangle Stack::pop() {
     --(this->end);
-    return **(this->end);
+    return *(this->end);
 }
 
 Rectangle& Stack::top() {
-    return **(this->end - 1);
+    return *(this->end - 1);
 }
 
 bool Stack::is_empty() {
@@ -94,18 +109,17 @@ bool Stack::is_full() {
 }
 
 void Stack::realloc_buffer() {
-    this->arr_size *= this->size_factor;
-    Rectangle** new_buffer = new Rectangle*[this->arr_size];
+    size_t new_buffer_size = this->size_factor * (this->buffer_end - this->buffer_begin);
+    Rectangle* new_buffer = new Rectangle[new_buffer_size];
     int new_buffer_cnt = 0;
 
-    while (!(this->is_empty())) {
+    while (this->buffer_begin != this->buffer_end) {
         new_buffer[new_buffer_cnt++] = *(this->buffer_begin++);
     }
-    delete[] this->buffer;
-    this->buffer = new_buffer;
+    delete[] this->buffer_begin;
+    this->buffer_begin = new_buffer;
 
-    this->buffer_begin = this->buffer;
-    this->buffer_end = this->buffer + this->arr_size;
+    this->buffer_end = this->buffer_begin + new_buffer_size;
 
     this->end = this->buffer_begin + new_buffer_cnt;
 }
