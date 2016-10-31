@@ -12,6 +12,9 @@
 #include <iostream>
 #include <assert.h>
 #include <fstream>
+#include <algorithm>
+#include <assert.h>
+#include <ctime>
 
 
 struct Athlete {
@@ -24,13 +27,19 @@ struct Athlete {
         return *this;
     };
 
+    bool operator<(const Athlete& athlete) const {
+        assert(mass && strength);
+
+        if (mass < athlete.mass) {
+            return true;
+        } else {
+            return strength < athlete.strength;
+        }
+    }
+
     int mass;
     int strength;
 };
-
-void print_athlete(const Athlete& athlete) {
-    std::cout << "m = " << athlete.mass << "; s = " << athlete.strength << std::endl;
-}
 
 
 class Array {
@@ -47,12 +56,16 @@ public:
 
     Athlete&operator[](int index);
 
-    int get_length() { return this->element_count;};
+    int get_length() { return element_count;};
 
-    bool is_empty() { return this->element_count == 0;};
+    bool is_empty() { return element_count == 0;};
+
+    void sort() {
+        std::sort(buffer, buffer + element_count);
+    }
 
 private:
-    bool is_full() { return this->element_count == this->buff_size;};
+    bool is_full() { return element_count == buff_size;};
     void realloc_buffer();
 
     Athlete* buffer;
@@ -60,6 +73,7 @@ private:
     int element_count;
     int size_factor;
 };
+
 
 Array::Array() {
     this->buff_size = 10;
@@ -76,7 +90,7 @@ Array::Array(int start_buffer_size, int size_factor) {
 }
 
 Array::~Array() {
-    delete[] this->buffer;
+    delete[] buffer;
 }
 
 void Array::push_back(const Athlete &element) {
@@ -100,68 +114,16 @@ Athlete& Array::operator[](int index) {
 }
 
 void Array::realloc_buffer() {
-    Athlete* new_buffer = new Athlete[this->buff_size * this->size_factor]();
-    for (int i = 0; i != this->buff_size; ++i) {
-        new_buffer[i] = this->buffer[i];
+    buff_size *= size_factor;
+    Athlete* new_buffer = new Athlete[buff_size]();
+    for (int i = 0; i != element_count; ++i) {
+        new_buffer[i] = buffer[i];
     }
 
-    delete[] this->buffer;
-    this->buffer = new_buffer;
+    delete[] buffer;
+    buffer = new_buffer;
 }
 
-
-Athlete find_strongest(Array& arr, bool* athlete_use_arr) {
-    int max_strength = -1;
-    Athlete strongest;
-    int strongest_ind = -1;
-
-    for (int i = 0; i != arr.get_length(); ++i) {
-        if (!athlete_use_arr[i] && arr[i].strength > max_strength) {
-            strongest = arr[i];
-            strongest_ind = i;
-            max_strength = arr[i].strength;
-        }
-    }
-
-    athlete_use_arr[strongest_ind] = true;
-    return strongest;
-}
-
-Athlete find_next(Array& athlete_arr, bool* athlete_use_arr, int& strength_left, bool& status) {
-    int max_next_strength_left = -1;
-    Athlete next_athlete;
-    int next_athlete_ind = -1;
-    status = false;
-
-    for (int i = 0; i != athlete_arr.get_length(); ++i) {
-        if (!athlete_use_arr[i]) {
-            int strength_1 = athlete_arr[i].strength;
-            int strength_2 = strength_left - athlete_arr[i].mass;
-            int min_val = strength_1 < strength_2 ? strength_1 : strength_2;
-
-            bool cond = true;
-            cond &= (min_val > max_next_strength_left) && (min_val >= 0);
-            if (min_val == max_next_strength_left) {
-                cond &= athlete_arr[i].mass > athlete_arr[next_athlete_ind].mass;
-            }
-
-            //if ((min_val > max_next_strength_left) && (min_val > 0)) {
-            if (cond) {
-                max_next_strength_left = min_val;
-                next_athlete = athlete_arr[i];
-                next_athlete_ind = i;
-                strength_left = min_val;
-                status = true;
-            }
-        }
-    }
-
-    if (status) {
-        athlete_use_arr[next_athlete_ind] = true;
-    }
-
-    return next_athlete;
-}
 
 
 void read_in(std::istream& is, Array& array) {
@@ -172,34 +134,72 @@ void read_in(std::istream& is, Array& array) {
     }
 }
 
-int solve(Array& athlete_arr, bool* athlete_use_arr) {
-    int max_height = 1;
-    Athlete curr_athlete = find_strongest(athlete_arr, athlete_use_arr);
-    int strength_left = curr_athlete.strength;
-    bool status = true;
+int solve(Array& athlete_arr) {
+    int result = 0;
+    int top_mass = 0;
+    athlete_arr.sort();
 
-    while (status) {
-        curr_athlete = find_next(athlete_arr, athlete_use_arr, strength_left, status);
-        if (status) {
-            ++max_height;
+    for (size_t i = 0; i != athlete_arr.get_length(); ++i) {
+        if (athlete_arr[i].strength >= top_mass) {
+            top_mass += athlete_arr[i].mass;
+            ++result;
         }
     }
 
-    return max_height;
+    return result;
 }
 
 
+void make_random_athletes_file(size_t athlete_num, std::ofstream& ofs) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(1, 100);
+
+
+    std::srand((unsigned int)std::time(0));
+    for (size_t i = 0; i != athlete_num; ++i) {
+        ofs << dis(gen) << ' ' << dis(gen) << std::endl;
+    }
+}
+
+void test() {
+    std::ofstream ofs("/home/artem/ClionProjects/algorithm-problems/module_1/Task_7/test_input.txt");
+    make_random_athletes_file(1000, ofs);
+    ofs.close();
+
+
+    Array athlete_arr;
+
+    std::ifstream ifs ("/home/artem/ClionProjects/algorithm-problems/module_1/Task_7/test_input.txt");
+    read_in(ifs, athlete_arr);
+    ifs.close();
+
+    if (athlete_arr.get_length() == 0) {
+        std::cout << 0;
+    }
+
+    bool* athlete_use_arr = new bool[athlete_arr.get_length()];
+
+    std::cout << solve(athlete_arr) << std::endl;
+
+    delete[] athlete_use_arr;
+
+}
 
 
 int main() {
-    Array athlete_arr = Array();
+
+    //test();
+
     //std::ifstream ifs ("/home/artem/ClionProjects/algorithm-problems/module_1/Task_7/input.txt");
 
+    Array athlete_arr;
+
     read_in(std::cin, athlete_arr);
-    bool* athlete_use_arr = new bool[athlete_arr.get_length()];
 
-    std::cout << solve(athlete_arr, athlete_use_arr);
+    athlete_arr.sort();
 
-    delete[] athlete_use_arr;
+    std::cout << solve(athlete_arr);
+
     return 0;
 }

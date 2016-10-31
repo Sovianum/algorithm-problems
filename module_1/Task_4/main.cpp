@@ -318,7 +318,7 @@ int main() {
     int operation_num = 0;
     std::cin >> operation_num;
 
-    Deque deque = Deque();
+    Deque deque;
     int operation_code = 0;
     int operation_arg = 0;
     for (int i = 0; i != operation_num; ++i) {
