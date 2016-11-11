@@ -1,7 +1,7 @@
 Алгоритм поиска k-ой порядковой статистики:
-1. Сделать partition.
+1. Сделать unidirectionalPartition.
     1.1. Если pivot_pos == k: return pivot
     1.2. Иначе, искать в одной из оставшихся частей.
 
 
-Алоритм partition.
+Алоритм counterPartition.

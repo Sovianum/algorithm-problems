@@ -43,10 +43,9 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="896">
-              <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+            <state relative-caret-position="-1069">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="20" />
               <folding>
-                <element signature="e#839#858#0" expanded="true" />
                 <element signature="e#958#1582#1" expanded="false" />
                 <element signature="e#2170#2319#0" expanded="false" />
                 <element signature="e#2321#2533#0" expanded="false" />
@@ -55,7 +54,6 @@
                 <element signature="e#2732#2880#0" expanded="false" />
                 <element signature="e#2882#2987#0" expanded="false" />
                 <element signature="e#2989#3238#0" expanded="false" />
-                <element signature="e#3743#4078#0" expanded="false" />
                 <element signature="e#4080#4653#0" expanded="false" />
               </folding>
             </state>
@@ -80,10 +78,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-4" />
-    <option name="y" value="-4" />
-    <option name="width" value="2568" />
-    <option name="height" value="1396" />
+    <option name="x" value="-1" />
+    <option name="width" value="1682" />
+    <option name="height" value="1025" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -345,17 +342,18 @@
       <workItem from="1476524945609" duration="17000" />
       <workItem from="1477124195981" duration="15000" />
       <workItem from="1477124259073" duration="31000" />
+      <workItem from="1478876116155" duration="687000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34668000" />
+    <option name="totallyTimeSpent" value="35355000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="2568" height="1396" extended-state="6" />
+    <frame x="-1" y="0" width="1682" height="1025" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.05980198" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.05974653" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -398,7 +396,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -407,7 +404,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -426,7 +422,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -435,7 +430,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -454,7 +448,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -463,7 +456,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -482,7 +474,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -491,7 +482,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -510,7 +500,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -519,7 +508,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -538,7 +526,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -547,7 +534,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -566,7 +552,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -575,19 +560,12 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt" />
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -601,7 +579,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -610,19 +587,12 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="1" column="3" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt" />
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -636,7 +606,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -645,19 +614,12 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="1" column="3" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt" />
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -671,7 +633,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -680,19 +641,12 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="1" column="3" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt" />
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -706,7 +660,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -715,19 +668,12 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt" />
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -741,7 +687,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -750,19 +695,12 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt" />
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -776,7 +714,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -785,19 +722,12 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt" />
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -811,7 +741,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -820,19 +749,12 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt" />
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -846,7 +768,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -855,7 +776,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -874,7 +794,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -883,7 +802,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -902,7 +820,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -911,7 +828,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -930,7 +846,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -939,7 +854,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -958,7 +872,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -967,7 +880,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
@@ -986,7 +898,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -995,40 +906,33 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt" />
     <entry file="file://$PROJECT_DIR$/test_input.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="896">
-          <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+        <state relative-caret-position="-1069">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="20" />
           <folding>
-            <element signature="e#839#858#0" expanded="true" />
             <element signature="e#958#1582#1" expanded="false" />
             <element signature="e#2170#2319#0" expanded="false" />
             <element signature="e#2321#2533#0" expanded="false" />
@@ -1037,7 +941,6 @@
             <element signature="e#2732#2880#0" expanded="false" />
             <element signature="e#2882#2987#0" expanded="false" />
             <element signature="e#2989#3238#0" expanded="false" />
-            <element signature="e#3743#4078#0" expanded="false" />
             <element signature="e#4080#4653#0" expanded="false" />
           </folding>
         </state>

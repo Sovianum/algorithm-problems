@@ -59,9 +59,26 @@ void heapifyTop(T* begin, T* end, T* start, bool (* isLess)(const T&, const T&))
 }
 
 template <class T>
+T extractMax(T* begin, T*& end, bool (* isLess)(const T&, const T&)) {
+    std::swap(*begin, *end);
+    auto result = *(end--);
+
+    heapifyTop(begin, end, begin, isLess);
+
+    return result;
+}
+
+template <class T>
 void heapSort(T* begin, T* end, bool (* isLess)(const T&, const T&)=defaultIsLess) {
     for (std::ptrdiff_t i = (end - begin) / 2; i >= 0; --i) {
         heapifyTop(begin, end, begin + i, isLess);
+    }
+
+    for (size_t i = end - begin; i != 0; --i) {
+        T top_elem = extractMax(begin, end, isLess);
+
+        heapifyTop(begin, begin + i, begin, isLess);
+        begin[i] = top_elem;
     }
 }
 
@@ -121,10 +138,11 @@ struct TimePoint {
     TimePoint(int value, bool is_add_point): value(value), is_add_point(is_add_point) {};
 };
 
-std::ostream& operator << (std::ostream& os, LifePeriod& request) {
-    // os << request.birth_day << ' ' << request.birth_month << ' ' << request.birth_year << ' ';
-    // os << request.death_day << ' ' << request.death_month << ' ' << request.death_year << ' ';
+bool operator<(const TimePoint& point_1, const TimePoint& point_2) {
+    return point_1.value < point_2.value;
+}
 
+std::ostream& operator << (std::ostream& os, LifePeriod& request) {
     os << request.convertToInt(request.birth_year, request.birth_month, request.birth_day);
     return os;
 }
@@ -145,7 +163,7 @@ bool operator<(const LifePeriod& item_1, const LifePeriod& item_2) {
 
 
 
-void readIn(std::istream& is, size_t value_num, std::vector<LifePeriod> vec) {
+void readIn(std::istream& is, size_t value_num, std::vector<LifePeriod>& vec) {
     LifePeriod life_period;
 
     for (size_t i = 0; i != value_num; ++i) {
@@ -156,7 +174,7 @@ void readIn(std::istream& is, size_t value_num, std::vector<LifePeriod> vec) {
     }
 }
 
-std::vector<TimePoint> getTimeLine(std::vector<LifePeriod> input_vec) {
+std::vector<TimePoint> getTimePoints(const std::vector<LifePeriod> &input_vec) {     // возвращает вектор точек времени
     std::vector<TimePoint> result;
     for (auto i = input_vec.cbegin(); i != input_vec.cend(); ++i) {
         result.push_back(TimePoint(i->getStartValue(), true));
@@ -166,18 +184,23 @@ std::vector<TimePoint> getTimeLine(std::vector<LifePeriod> input_vec) {
     return result;
 }
 
-int processTimeLine(std::vector<TimePoint> time_line) {
+int processTimeLine(std::vector<TimePoint>& time_points) {
     int val = 0;
     int max_val = 0;
 
-    for (auto i = time_line.cbegin(); i != time_line.cend(); ++i) {
+    heapSort(&(time_points[0]), &(time_points[time_points.size() - 1]));
+
+    for (auto i = time_points.cbegin(); i != time_points.cend(); ++i) {
         if (i->is_add_point) {
             ++val;
+            //std::cout << '+';
+
             if (val > max_val) {
                 max_val = val;
             }
         } else {
             --val;
+            //std::cout << '-';
         }
     }
 
@@ -185,19 +208,36 @@ int processTimeLine(std::vector<TimePoint> time_line) {
 }
 
 int solve(std::vector<LifePeriod> input_vec) {
-    return processTimeLine(getTimeLine(input_vec));
+    auto time_points = getTimePoints(input_vec);
+    return processTimeLine(time_points);
 }
+
+/*
+void testHeapSort() {
+    auto v = std::vector<int> {5, 2, 7, 2, 4,56, 78, 4, 3, 54,678, 6};
+    heapSort(&(v[0]), &(v[v.size() - 1]));
+
+    for (auto i = v.cbegin(); i != v.cend(); ++i) {
+        std::cout << *i << ' ';
+    }
+}
+*/
 
 
 int main() {
+
     std::vector<LifePeriod> vec;
     size_t value_num = 0;
-    std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_2/task_3/input.txt");
+    //std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_2/task_3/input.txt");
 
-    is >> value_num;
-    readIn(is, value_num, vec);
+    std::cin >> value_num;
+    readIn(std::cin, value_num, vec);
 
     std::cout << solve(vec);
+     /*
 
+    testHeapSort();
+
+     */
     return 0;
 }
