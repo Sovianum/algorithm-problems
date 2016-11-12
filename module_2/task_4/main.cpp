@@ -26,11 +26,6 @@ void insertionSort(T* begin, T* end, std::function<bool(const T&, const T&)> isL
 }
 
 template <class T>
-bool defaultIsLess(const T& item_1, const T& item_2) {
-    return item_1 < item_2;
-}
-
-template <class T>
 bool defaultIsGreater(const T& item_1, const T& item_2) {
     return item_1 > item_2;
 }
@@ -73,12 +68,11 @@ template<typename T>
 T nonRecursiveFindKStatistics(T* begin, T* end, size_t k,
                                 size_t (* pivotPosStrategy) (T*, T*, std::function<bool(const T&, const T&)>)=median3Strategy,
                                 size_t (* partition) (T*, T*, size_t, bool (*) (const T&, const T&))=unidirectionalPartition,
-                                bool (* isLess) (const T&, const T&)=defaultIsLess,
                                 bool (* isGreater) (const T&, const T&)=defaultIsGreater) {
 
     size_t l = 0;
     size_t r = end - begin;
-    size_t init_pivot_pos = pivotPosStrategy(begin, end, (std::function<bool(const T&, const T&)>)isLess);
+    size_t init_pivot_pos = pivotPosStrategy(begin, end, (std::function<bool(const T&, const T&)>)isGreater);
     size_t pivot_pos = partition(begin, end, init_pivot_pos, isGreater);
 
     while (pivot_pos + l != k) {
