@@ -14,11 +14,6 @@
 #include <assert.h>
 
 template <class T>
-bool defaultIsGreater(const T& item_1, const T& item_2) {
-    return item_1 > item_2;
-}
-
-template <class T>
 bool defaultIsLess(const T& item_1, const T& item_2) {
     return item_1 < item_2;
 }
@@ -29,10 +24,6 @@ size_t left_child_index(size_t index) {
 
 size_t right_child_index(size_t index) {
     return 2 * index + 2;
-};
-
-size_t parent_index(size_t index) {
-    return (index - 1) / 2;
 };
 
 template <class T>
@@ -66,31 +57,6 @@ void heapifyTop(T* begin, T* end, T* start, bool (* compare)(const T&, const T&)
 }
 
 template <class T>
-void heapifyBottom(T* begin, T* end, bool (* compare)(const T&, const T&)) {
-
-    size_t item_index = end - begin - 1;
-    while (true) {
-        if (item_index == 0) {
-            break;
-        }
-
-        if (compare(begin[parent_index(item_index)], begin[item_index])) {
-            std::swap(begin[parent_index(item_index)], begin[item_index]);
-
-            item_index = parent_index(item_index);
-        } else {
-            break;
-        }
-    }
-}
-
-template <class T>
-void add(T* begin, T*& end, T value, bool (* compare)(const T&, const T&)) {
-    *(end++) = value;
-    heapifyBottom(begin, end, compare);
-}
-
-template <class T>
 T extractTop(T *begin, T *&end, bool (*compare)(const T &, const T &)) {
     std::swap(*begin, *(--end));
     auto result = *end;
@@ -98,13 +64,6 @@ T extractTop(T *begin, T *&end, bool (*compare)(const T &, const T &)) {
     heapifyTop(begin, end, begin, compare);
 
     return result;
-}
-
-template <class T>
-void fullHeapify(T *begin, T *end, bool (*compare)(const T &, const T &)) {
-    for (std::ptrdiff_t i = (end - begin) / 2; i >= 0; --i) {
-        heapifyTop(begin, end, begin + i, compare);
-    }
 }
 
 
@@ -144,55 +103,54 @@ void merge(const T* begin_1, const T* end_1, const T* begin_2, const T* end_2, T
 }
 
 
-void solve2(size_t n, size_t k, std::istream &is, std::ostream &os,
-            bool (* compare)(const int&, const int&)) {
-    const size_t series_len = k;
-
-    auto big_buffer = std::vector<int>(series_len * 2, 0);
+void solve(size_t n, size_t k, std::istream &is, std::ostream &os,
+           bool (*compare)(const int &, const int &)) {
+    auto big_buffer = std::vector<int>(k * 2, 0);
     auto big_buffer_begin  = &(big_buffer[0]);
     auto big_buffer_end = &(big_buffer[big_buffer.size()]);
 
-    auto small_buffer = std::vector<int>(series_len, 0);
+    auto small_buffer = std::vector<int>(k, 0);
     auto small_buffer_begin = &(small_buffer[0]);
     auto small_buffer_end = &(small_buffer[small_buffer.size()]);
+
     int temp = 0;
     size_t cnt = 0;
 
-    for (; cnt != 2 * series_len; ++cnt) {
+    for (; cnt != 2 * k; ++cnt) {
         is >> temp;
         big_buffer[cnt] = temp;
     }
 
     heapSort(big_buffer_begin, big_buffer_end, compare);
 
-    for (size_t i = 0; i != series_len; ++i) {
+    for (size_t i = 0; i != k; ++i) {
         os << big_buffer[i] << ' ';
     }
 
     for (; cnt != n; ++cnt) {
-        if (cnt % series_len == 0 && cnt != 2 * series_len) {
+        if (cnt % k == 0 && cnt != 2 * k) {
             heapSort(small_buffer_begin, small_buffer_end, compare);
-            merge(big_buffer_begin + series_len, big_buffer_end,
+            merge(big_buffer_begin + k, big_buffer_end,
                   small_buffer_begin, small_buffer_end,
                   big_buffer_begin, compare);
 
-            for (size_t i = 0; i != series_len; ++i) {
+            for (size_t i = 0; i != k; ++i) {
                 os << big_buffer[i] << ' ';
             }
         }
 
         is >> temp;
-        small_buffer[cnt % series_len] = temp;
+        small_buffer[cnt % k] = temp;
     }
 
     size_t rest_buffer_offset = n % k == 0 ? k : n % k;
 
     heapSort(small_buffer_begin, small_buffer_begin + rest_buffer_offset, compare);
-    merge(big_buffer_begin + series_len, big_buffer_end,
+    merge(big_buffer_begin + k, big_buffer_end,
           small_buffer_begin, small_buffer_begin + rest_buffer_offset,
           big_buffer_begin, defaultIsLess);
 
-    for (size_t i = 0; i != series_len + rest_buffer_offset; ++i) {
+    for (size_t i = 0; i != k + rest_buffer_offset; ++i) {
         os << big_buffer[i] << ' ';
     }
 }
@@ -240,16 +198,16 @@ void makeTest() {
     size_t n = 9;
     size_t k = 3;
     size_t set_num = 10;
-    //std::ofstream os("/home/artem/ClionProjects/algorithm-problems/module_2/task_5/test_input.txt");
-    //make_random_file(n, k, set_num, os);
-    //os.close();
+    std::ofstream os("/home/artem/ClionProjects/algorithm-problems/module_2/task_5/test_input.txt");
+    make_random_file(n, k, set_num, os);
+    os.close();
 
     std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_2/task_5/test_input.txt");
 
     clock_t start, end;
 
     start = clock();
-    test(n, k, set_num, is, solve2, defaultIsLess);
+    test(n, k, set_num, is, solve, defaultIsLess);
     end = clock();
 
     std::cout << (double)(end - start) / (set_num * CLOCKS_PER_SEC);
@@ -264,67 +222,10 @@ int main() {
     size_t k = 0;
     is >> n;
     is >> k;
-    solve2(n, k, is, std::cout, defaultIsLess);
+    solve(n, k, is, std::cout, defaultIsLess);
 
 
     //makeTest();
 
     return 0;
 }
-
-/*
- *
-void solve(size_t n, size_t k, std::istream& is=std::cin, std::ostream& os=std::cout) {
-    auto buffer = std::vector<int >();
-
-    int temp = 0;
-    for (size_t i = 0; i != k; ++i) {
-        is >> temp;
-        buffer.push_back(temp);
-    }
-
-    fullHeapify(&(buffer[0]), &(buffer[buffer.size()]), defaultIsGreater);
-
-    int * begin = &(buffer[0]);
-    int * end = &(buffer[buffer.size()]);
-    for (size_t i = 0; i < n - k; ++i) {
-        int top = extractTop<int >(begin, end, defaultIsGreater);
-        os << top << ' ';
-
-        is >> temp;
-        add<int >(begin, end, temp, defaultIsGreater);
-    }
-
-    for (size_t i = 0; i != k; ++i) {
-        int out = extractTop<int >(begin, end, defaultIsGreater);
-        os << out << ' ';
-    }
-}
-
-
-void solve1(size_t n, size_t k, std::istream &is = std::cin, std::ostream &os = std::cout) {
-    auto series_len = k + 1;
-
-    auto buffer = std::vector<int >(series_len, 0);
-    int temp = 0;
-
-    for (size_t i = 0; i < n; ++i) {
-        is >> temp;
-        buffer[i % series_len] = temp;
-
-        if ((i + 1) % series_len == 0) {
-            heapSort(&(buffer[0]), &(buffer[buffer.size()]), defaultIsLess);
-
-            for (auto item: buffer) {
-                os << item << ' ';
-            }
-        }
-    }
-
-    heapSort(&(buffer[0]), &(buffer[n % series_len]), defaultIsLess);
-
-    for (size_t i = 0; i != n % series_len; ++i) {
-        os << buffer[i] << ' ';
-    }
-}
- */
