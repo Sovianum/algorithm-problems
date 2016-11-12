@@ -133,13 +133,9 @@ void merge(const T* begin_1, const T* end_1, const T* begin_2, const T* end_2, T
     for (size_t i = 0; i != range_1 + range_2; ++i) {
         if (cnt_1 == range_1 && cnt_2 != range_2) {
             result_begin[i] = begin_2[cnt_2++];
-        }
-
-        if (cnt_2 == range_2 && cnt_1 != range_1) {
+        }else if (cnt_2 == range_2 && cnt_1 != range_1) {
             result_begin[i] = begin_1[cnt_1++];
-        }
-
-        if (compare(begin_1[cnt_1], begin_2[cnt_2])) {
+        }else if (compare(begin_1[cnt_1], begin_2[cnt_2])) {
             result_begin[i] = begin_1[cnt_1++];
         } else {
             result_begin[i] = begin_2[cnt_2++];
@@ -189,12 +185,14 @@ void solve2(size_t n, size_t k, std::istream &is, std::ostream &os,
         small_buffer[cnt % series_len] = temp;
     }
 
-    heapSort(small_buffer_begin, small_buffer_begin + n % k, compare);
+    size_t rest_buffer_offset = n % k == 0 ? k : n % k;
+
+    heapSort(small_buffer_begin, small_buffer_begin + rest_buffer_offset, compare);
     merge(big_buffer_begin + series_len, big_buffer_end,
-          small_buffer_begin, small_buffer_begin + n % k,
+          small_buffer_begin, small_buffer_begin + rest_buffer_offset,
           big_buffer_begin, defaultIsLess);
 
-    for (size_t i = 0; i != series_len + n % k; ++i) {
+    for (size_t i = 0; i != series_len + rest_buffer_offset; ++i) {
         os << big_buffer[i] << ' ';
     }
 }
@@ -239,7 +237,7 @@ void test(size_t n, size_t k, size_t set_num, std::istream& is,
 }
 
 void makeTest() {
-    size_t n = 10;
+    size_t n = 9;
     size_t k = 3;
     size_t set_num = 10;
     //std::ofstream os("/home/artem/ClionProjects/algorithm-problems/module_2/task_5/test_input.txt");
@@ -258,18 +256,18 @@ void makeTest() {
 }
 
 int main() {
-/*
-    //std::istream& is = std::cin;
-    std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_2/task_5/input.txt");
+
+    std::istream& is = std::cin;
+    //std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_2/task_5/input.txt");
 
     size_t n = 0;
     size_t k = 0;
     is >> n;
     is >> k;
     solve2(n, k, is, std::cout, defaultIsLess);
-*/
 
-    makeTest();
+
+    //makeTest();
 
     return 0;
 }
