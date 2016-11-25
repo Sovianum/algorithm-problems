@@ -1,0 +1,3 @@
+/home/artem/Clion/algorithm-problems/module_2/task_6/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/artem/Clion/algorithm-problems/module_2/task_6/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/artem/Clion/algorithm-problems/module_2/task_6/cmake-build-debug/CMakeFiles/task_6.dir

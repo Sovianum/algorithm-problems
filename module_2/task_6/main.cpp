@@ -10,6 +10,15 @@
 #include <algorithm>
 #include <ctime>
 
+
+
+template <typename T>
+void printVec(std::vector<T> vec) {
+    for (auto item: vec) {
+        std::cout << item << std::endl;
+    }
+}
+
 size_t left_child_index(size_t index) {
     return 2 * index + 1;
 };
@@ -71,6 +80,9 @@ void heapSort(T* begin, T* end, std::function<bool(const T&, const T&)> compare)
 }
 
 
+
+
+
 std::vector<std::string> myReadIn(std::istream& is) {
     std::vector<std::string> result;
     std::string temp;
@@ -102,6 +114,26 @@ char getSymbol(const std::string& s, const size_t index) {
     }
 }
 
+void countSort(std::string* begin, std::string* end, size_t index) {
+    auto countVector = std::vector<std::vector<int >>(256, std::vector<int >(0));
+
+    auto buffer = std::vector<std::string>();
+    for (auto str_ptr = begin; str_ptr != end; ++str_ptr) {
+        buffer.push_back(*str_ptr);
+    }
+
+    for (int i = 0; i != end - begin; ++i) {
+        countVector[getSymbol(begin[i], index)].push_back(i);
+    }
+
+    size_t cnt = 0;
+    for (auto i: countVector) {
+        for (auto j: i) {
+            begin[cnt++] = buffer[j];
+        }
+    }
+}
+
 void sortStringsBySymbol(std::string* begin, std::string* end, const size_t index) {
     auto compare = [index](const std::string& s_1, const std::string& s_2) -> bool {
         return getSymbol(s_1, index) < getSymbol(s_2, index);
@@ -128,12 +160,16 @@ std::vector<size_t> getBinLengths(const std::string* begin, const std::string* e
     return result;
 }
 
+
+
+
 void MSDSort(std::string *begin, std::string *end, size_t index=0) {
     if ((end - begin <= 1) || (index >= getMaxStrLen(begin, end))) {
         return;
     }
 
     sortStringsBySymbol(begin, end, index);
+    //countSort(begin, end, index);
     auto bin_lengths = getBinLengths(begin, end, index);
 
     std::string* range_begin;
@@ -144,13 +180,6 @@ void MSDSort(std::string *begin, std::string *end, size_t index=0) {
         range_end = range_begin + bin_length;
 
         MSDSort(range_begin, range_end, index + 1);
-    }
-}
-
-template <typename T>
-void printVec(std::vector<T> vec) {
-    for (auto item: vec) {
-        std::cout << item << std::endl;
     }
 }
 
@@ -174,27 +203,43 @@ void make_random_file(size_t max_str_len, size_t str_num, std::ofstream &ofs) {
 
 
 void test() {
-    std::ofstream ofs("/home/artem/ClionProjects/algorithm-problems/module_2/task_6/test_input.txt");
-    make_random_file(100, 100, ofs);
-    ofs.close();
+    //std::ofstream ofs("/home/artem/ClionProjects/algorithm-problems/module_2/task_6/test_input.txt");
+    //make_random_file(100, 100, ofs);
+    //ofs.close();
 
     std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_2/task_6/test_input.txt");
-
     auto input = myReadIn(is);
+    is.close();
 
     MSDSort(&(input[0]), &(input[input.size()]), 0);
     printVec(input);
     std::cout << std::endl;
-
-    is.close();
 }
 
+
+void testCountSort() {
+    std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_2/task_6/test_input.txt");
+
+    auto input = myReadIn(is);
+
+    countSort(&(input[0]), &(input[input.size()]), 0);
+    printVec(input);
+    std::cout << std::endl;
+}
+
+
 int main() {
+    
     std::istream& is = std::cin;
 
     auto input = myReadIn(is);
     MSDSort(&(input[0]), &(input[input.size()]));
     printVec(input);
+
+
+    //testCountSort();
+
+    //test();
 
     return 0;
 }
