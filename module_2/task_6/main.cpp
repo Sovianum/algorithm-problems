@@ -134,13 +134,13 @@ void countSort(std::string* begin, std::string* end, size_t index) {
     }
 }
 
-void sortStringsBySymbol(std::string* begin, std::string* end, const size_t index) {
-    auto compare = [index](const std::string& s_1, const std::string& s_2) -> bool {
-        return getSymbol(s_1, index) < getSymbol(s_2, index);
-    };
+//void sortStringsBySymbol(std::string* begin, std::string* end, const size_t index) {
+    //auto compare = [index](const std::string& s_1, const std::string& s_2) -> bool {
+    //    return getSymbol(s_1, index) < getSymbol(s_2, index);
+    //};
 
-    heapSort<std::string>(begin, end, compare);
-}
+//    countSort(begin, end, index);
+//}
 
 std::vector<size_t> getBinLengths(const std::string* begin, const std::string* end, const size_t index) {
     auto result = std::vector<size_t>();
@@ -161,6 +161,11 @@ std::vector<size_t> getBinLengths(const std::string* begin, const std::string* e
 }
 
 
+std::vector<size_t> sortStringsBySymbol(std::string* begin, std::string* end, const size_t index) {
+    countSort(begin, end, index);
+
+    return getBinLengths(begin, end, index);
+}
 
 
 void MSDSort(std::string *begin, std::string *end, size_t index=0) {
@@ -168,9 +173,7 @@ void MSDSort(std::string *begin, std::string *end, size_t index=0) {
         return;
     }
 
-    sortStringsBySymbol(begin, end, index);
-    //countSort(begin, end, index);
-    auto bin_lengths = getBinLengths(begin, end, index);
+    auto bin_lengths = sortStringsBySymbol(begin, end, index);
 
     std::string* range_begin;
     std::string* range_end = begin;
@@ -207,7 +210,7 @@ void test() {
     //make_random_file(100, 100, ofs);
     //ofs.close();
 
-    std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_2/task_6/test_input.txt");
+    std::ifstream is("/home/artem/Clion/algorithm-problems/module_2/task_6/test_input.txt");
     auto input = myReadIn(is);
     is.close();
 
@@ -218,7 +221,7 @@ void test() {
 
 
 void testCountSort() {
-    std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_2/task_6/test_input.txt");
+    std::ifstream is("/home/artem/Clion/algorithm-problems/module_2/task_6/test_input.txt");
 
     auto input = myReadIn(is);
 
@@ -229,7 +232,7 @@ void testCountSort() {
 
 
 int main() {
-    
+
     std::istream& is = std::cin;
 
     auto input = myReadIn(is);

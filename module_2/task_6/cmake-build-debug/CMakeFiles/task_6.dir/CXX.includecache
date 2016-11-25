@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/artem/Clion/algorithm-problems/module_2/task_6/main.cpp
+iostream
+-
+fstream
+-
+vector
+-
+functional
+-
+algorithm
+-
+ctime
+-
+
