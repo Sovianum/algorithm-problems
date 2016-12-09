@@ -48,9 +48,9 @@ private:
         DELETED
     };
 
-    size_t findFree(size_t, size_t);
+    size_t findFree(std::string&, size_t, size_t);
 
-    size_t findIndex(std::string&, size_t, size_t);
+    size_t findIndex(std::string&, size_t, size_t, bool&);
 
     float get_fill_factor();
 
@@ -83,11 +83,12 @@ bool StringSet::add(std::string &str) {
 
     size_t h_1 = hash_1(str);
     size_t h_2 = hash_2(str);
+    bool is_free;
+    size_t index = findIndex(str, h_1, h_2, is_free);
 
-    if (findIndex(str, h_1, h_2) == curr_size) {
-        size_t insert_index = findFree(h_1, h_2);
-        key_vec[insert_index] = FULL;
-        value_vec[insert_index] = str;
+    if (is_free) {
+        key_vec[index] = FULL;
+        value_vec[index] = str;
         ++item_count;
 
         return true;
@@ -99,10 +100,11 @@ bool StringSet::add(std::string &str) {
 bool StringSet::erase(std::string &str) {
     size_t h_1 = hash_1(str);
     size_t h_2 = hash_2(str);
+    bool is_free;
 
-    size_t item_index = findIndex(str, h_1, h_2);
-    if (item_index != curr_size) {
-        key_vec[item_index] = DELETED;
+    size_t index = findIndex(str, h_1, h_2, is_free);
+    if (!is_free && index != curr_size) {
+        key_vec[index] = DELETED;
         --item_count;
         return true;
     }
@@ -112,11 +114,14 @@ bool StringSet::erase(std::string &str) {
 bool StringSet::contains(std::string &str) {
     size_t h_1 = hash_1(str);
     size_t h_2 = hash_2(str);
-    return findIndex(str, h_1, h_2) != curr_size;
+    bool is_free;
+    size_t index = findIndex(str, h_1, h_2, is_free);
+    return !is_free && index != curr_size;
+    //return findIndex(str, h_1, h_2) != curr_size;
 }
 
 
-size_t StringSet::findFree(size_t h_1, size_t h_2) {
+size_t StringSet::findFree(std::string& str, size_t h_1, size_t h_2) {
     for (size_t i = 0; i != curr_size; ++i) {
         size_t index = (h_1 + i * (2 * h_2 + 1)) % curr_size;
 
@@ -128,15 +133,33 @@ size_t StringSet::findFree(size_t h_1, size_t h_2) {
     return curr_size;
 }
 
-size_t StringSet::findIndex(std::string& str, size_t h_1, size_t h_2) {
+size_t StringSet::findIndex(std::string& str, size_t h_1, size_t h_2, bool& is_free) {
+    is_free = false;
+    size_t free_index = 0;
+    bool used_deleted = false;
+
     for (size_t i = 0; i != curr_size; ++i) {
         size_t index = (h_1 + i * (2 * h_2 + 1)) % curr_size;
 
+        if (!used_deleted && key_vec[index] == DELETED) {
+            used_deleted = true;
+            free_index = index;
+        }
         if (key_vec[index] == EMPTY) {
+            is_free = true;
+            free_index = index;
             break;
         } else if (key_vec[index] == FULL && value_vec[index] == str) {
             return index;
         }
+    }
+
+    if (used_deleted) {
+        is_free = true;
+    }
+
+    if (is_free) {
+        return free_index;
     }
 
     return curr_size;
@@ -177,7 +200,7 @@ void StringSet::rehash() {
             size_t h_1 = hash_1(str);
             size_t h_2 = hash_2(str);
 
-            size_t insert_index = findFree(h_1, h_2);
+            size_t insert_index = findFree(str, h_1, h_2);
             key_vec[insert_index] = FULL;
             value_vec[insert_index] = str;
         }
@@ -259,11 +282,13 @@ void make_random_file(std::vector<std::string> str_vec, size_t str_num, std::ofs
 
 
 void test() {
+    /*
     std::ofstream ofs("/home/artem/ClionProjects/algorithm-problems/module_3/task_1/test_input.txt");
     auto str_vec = std::vector<std::string>{"hi", "buy", "go", "asdf", "qwrf", "vqwer", "bvqwvw", "wefw", "afwevawef",
                                             "vqwe", "vawv", "vawejn", "asvjhb", "vakvaejbnv", "as;kjd", "vaewrf", "vasdv"};
     make_random_file(str_vec, 1000, ofs);
     ofs.close();
+     */
 
     std::ifstream is("/home/artem/ClionProjects/algorithm-problems/module_3/task_1/test_input.txt");
     std::string command_key;
@@ -308,5 +333,4 @@ int main() {
             std::cout << "FAIL" << std::endl;
         }
     }
-
 }

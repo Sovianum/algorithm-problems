@@ -16,18 +16,16 @@ class BinaryNode {
 public:
     BinaryNode(int key=0, BinaryNode* parent= nullptr): left{nullptr}, right{nullptr}, parent{parent}, key_{key} {};
 
-    ~BinaryNode() {
-        delete(left);
-        delete(right);
-    }
-
     void add(int key) {
-        BinaryNode*& addition_point = getNext(key);
-        if (addition_point == nullptr) {
-            addition_point = new BinaryNode(key, this);
-        } else {
-            addition_point->add(key);
+        BinaryNode* curr_node = this;
+        BinaryNode* addition_point = getNext(key);
+
+        while (addition_point != nullptr) {
+            curr_node = addition_point;
+            addition_point = curr_node->getNext(key);
         }
+
+        curr_node->getNext(key) = new BinaryNode(key, this);
     }
 
     BinaryNode*& getNext(int key) {
@@ -44,10 +42,50 @@ public:
     BinaryNode* parent;
 };
 
-std::vector<int> getBFSPrintout(BinaryNode* root) {
+
+class BinaryTree {
+public:
+    BinaryTree() {
+        root = new BinaryNode(0);
+    };
+
+    ~BinaryTree() {
+        std::queue<BinaryNode*> q;
+        q.push(root);
+
+        while (!q.empty()) {
+            auto node = q.front();
+            q.pop();
+
+            if (node->left != nullptr) {
+                q.push(node->left);
+            }
+            if (node->right != nullptr) {
+                q.push(node->right);
+            }
+
+
+            delete node;
+        }
+    }
+
+    void add(int key) {
+        root->add(key);
+    }
+
+    BinaryNode*& getRoot() {
+        return root;
+    }
+
+private:
+    BinaryNode* root;
+};
+
+
+std::vector<int> getBFSPrintout(BinaryTree *tree) {
     auto result = std::vector<int>();
     std::queue<BinaryNode*> q;
-    q.push(root);
+    q.push(tree->getRoot());
 
     while (!q.empty()) {
         auto node = q.front();
@@ -65,18 +103,19 @@ std::vector<int> getBFSPrintout(BinaryNode* root) {
     return result;
 }
 
-void readInput(BinaryNode* root, std::istream& is, size_t item_num) {
+
+void readInput(BinaryTree *tree, std::istream &is, size_t item_num) {
     int buffer;
-    is >> root->key_;
+    is >> tree->getRoot()->key_;
 
     for (size_t i = 0; i != item_num - 1; ++i) {
         is >> buffer;
-        root->add(buffer);
+        tree->add(buffer);
     }
 }
 
 int main() {
-    auto root = new BinaryNode(0);
+    auto tree = new BinaryTree();
     size_t item_num;
     std::fstream ifs("/home/artem/ClionProjects/algorithm-problems/module_3/task_2/input.txt");
 
@@ -85,12 +124,12 @@ int main() {
 
     is >> item_num;
 
-    readInput(root, is, item_num);
+    readInput(tree, is, item_num);
 
-    for (auto i: getBFSPrintout(root)) {
+    for (auto i: getBFSPrintout(tree)) {
         std::cout << i << ' ';
     }
 
-    delete root;
+    delete tree;
     return 0;
 }
